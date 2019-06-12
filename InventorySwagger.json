@@ -1,0 +1,509 @@
+swagger: "2.0"
+info:
+  description: "This is a Basic API Documentation. Later it will be developed for `https://app.lithion.in`"
+  version: "1.0.0"
+  title: "API Documentation"
+  termsOfService: "https://app.lithion.in/"
+  contact:
+    email: "md.aurangzeb@lithion.in"
+host: "localhost:3000"
+basePath: "/V2/api"
+# consumes: 
+#   # - "multipart/form-data"
+#   # - "application/x-www-form-urlencoded"
+#   - "application/json"
+tags:
+- name: "Inventory"
+  description: "Inventory Management System."  
+schemes:
+- "http"
+paths:
+  /inventory/returnControllerList:
+    post:
+      tags:
+      - "Inventory"
+      summary: "Returns the Controller's list"
+      description: "Returns the list of all Demo Controllers."
+      operationId: "returnControllerList"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Returns the list of all Demo Controllers which are Dispatched. "
+        required: true
+        schema:
+          $ref: "#/definitions/ControllerCheckerSchema"
+      responses:
+        200:
+          description: "Ok.. Data Found."
+        804:
+          description: "Data Not Found."
+        404:
+          description: "Path Not Found" 
+          
+  /inventory/returnMotorList:
+    post:
+      tags:
+      - "Inventory"
+      summary: "Should return the Motors List" 
+      description: "Returns the values of all Motors"
+      operationId: "returnMotor"
+      consumes: 
+      - "application/json"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "body"
+        description: "Returns the values of all Motors (No arguments Needed.)"
+        required: true
+        schema:
+          $ref: '#/definitions/MotorCheckerSchema'
+      responses:
+        404:
+          description: "Data Not Found"
+        405:
+          description: "Invalid Input"
+  /report/listIssue:
+    post:
+      tags:
+        - "Jira Issue"
+      summary: "Logs all the issues related to Compnents"  
+      description: "Log issues"
+      operationId: "jiraIssue"
+      consumes: 
+      - "application/json"
+      # - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "category"
+        description: "List of Issues based on category"
+        required: true
+        # type: "string"
+        schema:
+          $ref: '#/definitions/jiraIssueSchema'
+       
+        
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/jiraIssueSchema'
+        400:
+          description: "Invalid ID supplied"
+        701:
+          description: "Data Not found"
+  
+  /inventory/controllerList:
+    post:
+      tags:
+      - "Inventory"
+      summary: "List of controllers not linked and Dispatched. "
+      description: "List of controllers not linked and Dispatched. "
+      operationId: "controllerList"
+      consumes: 
+      - "application/json"
+      produces: 
+      - "appliation/json"
+      parameters: 
+      - in: "body"
+        name: "controllerList"
+        description: "No input needed."
+        required: true
+        schema:
+          $ref: '#/definitions/ControllerCheckerSchema'
+      responses:
+        200:
+          description: "Successful operation."
+        801:
+          description: "Data Not Fetched."
+        404:
+          description: "Data Not found."
+  /inventory/mapInkedNumber:
+    post:
+      tags:
+      - "Inventory"
+      summary: "Updates the linked Id of the controller"
+      description: "Finds the value of Controller from componentId and updates inkedId"
+      consumes: 
+      - "application/json"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "componentId & inkedId"
+        required: true
+        schema:
+          $ref: '#/definitions/ControllerCheckerSchema'
+      responses:
+        200:
+          description: "Data Updated Successfully"
+        801:
+          description: "Not updated"
+        804:
+          description: "Not Enough Parameters."
+      
+  /inventory/getBatchInfo:
+    post:
+      tags: 
+      - "Inventory"
+      summary: "Gives the information of Batches"
+      description: "Gives the information of Batches between given time period"
+      consumes: 
+      - "application/json"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "fromDate & toDate (YYYY-MM-DD)"
+        required: true
+        schema:
+          $ref: '#/definitions/InventorySchema'
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "No Data Found From Database"
+        404:
+          description: " Not Found"
+  /inventory/getBmsBatchInfo:
+    post:
+      tags: 
+      - "Inventory"
+      summary: "Gives the information of BMS Batches"
+      description: "Gives the information of BMS Batches between given time period"
+      consumes: 
+      - "application/json"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "fromDate & toDate (YYYY-MM-DD)"
+        required: true
+        schema:
+          $ref: '#/definitions/bmsInventorySchema'
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "No Data Found From Database"
+        404:
+          description: " Not Found"
+    
+  /inventory/bmsOrderInvoice:
+    post:
+      tags: 
+      - "Inventory"
+      summary: "Creating BMS Order Invoice."
+      description: "Creating BMS Order invoice from 3 parameters: partNumber, invoiceNumber, registeredBy"
+      consumes: 
+      - "application/json"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "bmsOrderInvoice"
+        required: true
+        description: "No Parameters needed."
+        schema:
+          $ref: '#/definitions/bmsInventorySchema'
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "Not Updated"
+        404:
+          description: "Path Not Found"
+        804:
+          description: "Missing Parameters."
+  /inventory/bmsOrderId:
+    post:
+      tags:
+      - "Inventory"
+      summary: "Gives BMS Orders list"
+      description: "Gives BMS Orders list with Invoice not linked from `bmsInventory` collection"
+      produces: 
+      - "application/json"
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "No Data Found From Database"
+        404:
+          description: "Path Not Found"  
+  /inventory/fetchPart:
+    post:
+      tags: 
+      - "Inventory"
+      summary: "Gives the information of available Units"
+      description: "Gives the information of available Units from `inventory.`"
+      produces: 
+      - "application/json"
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "No Data Found From Database"
+        404:
+          description: "Path Not Found"  
+  /inventory/getorderId:
+    get:
+      tags: 
+      - "Inventory"
+      summary: "Gives the list of Orders from orders collection"
+      description: "Gives the list of Orders from `orders` collection where invoiceNumber is null."
+      produces: 
+      - "application/json"
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "No Data Found From Database"
+        404:
+          description: "Path Not Found"  
+  /inventory/inventoryOrderData:
+    post:
+      tags: 
+      - "Inventory"
+      summary: "Based on orderId , it returns the Order detail"
+      description: "for a given order , returns the all details of that order."
+      consumes: 
+      - "application/json"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "orderId"
+        required: true
+        description: "Parameter name: orderId"
+        schema:
+          $ref: '#/definitions/OrderDispatchSchema'
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "No Data Found From Database"
+        404:
+          description: "Path Not Found"
+  /inventory/orderHistory:
+    post:
+      tags: 
+      - "Inventory"
+      summary: "Gives the Order History of all Orders."
+      description: "It gives the whole Order History."
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: '#/definitions/OrderDispatchSchema'
+        description: "`No Parameters needed!`"
+      responses:
+        200:
+          description: "Ok. Data fetched successfully"
+        801:
+          description: "No Data Found From Database"
+        404:
+          description: "Path Not Found"
+  
+  /inventory/invoiceDataMap:
+    post:
+      tags: 
+      - "Inventory"
+      summary: "It maps the Order with its Invoice" 
+      description: "For a given orderId , it maps with a Invoice Number."
+      consumes: 
+      - "application/json"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "body"
+        description: "`Parameters Needed: orderId, invoiceNumber,submittedBy`"
+        schema:
+          $ref: '#/definitions/OrderDispatchSchema'
+      responses:
+        200:
+          description: "Invoice Updated Successfully"
+        800:
+          description: "Not updated"
+    
+    
+definitions:
+  ControllerCheckerSchema:
+    type: "object"
+    required: 
+    - "componentId"
+    properties:
+      partNumber:
+        type: "string"
+      expiryDate:
+        type: "string"
+        format: "date-time"
+        default: null
+      isDispatched:
+        type: "boolean"
+        default: false
+      healthCheck:
+        type: "boolean"
+        default: true
+      componentId:
+        type: "string"
+      demo: 
+        type: "boolean"
+        default: false
+      inkedId:
+        type: "string"
+        default: null
+    xml:
+      name: "ControllerCheckerSchema"
+  MotorCheckerSchema:
+    type: "object"
+    required: 
+    - "componentId"
+    properties:
+      partNumber:
+        type: "string"
+      expiryDate:
+        type: "string"
+        format: "date-time"
+        default : null
+      isDispatched:
+        type: "boolean"
+        default: false
+      healthCheck:
+        type: "boolean"
+        default: true
+      componentId:
+        type: "string"
+      demo: 
+        type: "boolean"
+        default: false
+    xml:
+      name: "MotorCheckerSchema"
+  jiraIssueSchema:
+    type: "object"
+    required:
+    - "issueType"
+    - "issueCategory"
+    properties:
+      issueType: 
+        type: "string"
+      issueCategory:
+        type: "string"
+      assigneeName:
+        type: "string"
+      estimatedTime:
+        type: "integer"
+    xml:
+      name: "jiraIssueSchema"    
+  InventorySchema:
+    type: "object"
+    required: 
+    - "partNumber"
+    - "warrantyPeriod"
+    - "units"
+    - "registeredBy"
+    properties:
+      partNumber:
+        type: "string"
+      warrantyPeriod:
+        type: "number"
+        default: 0
+      units:
+        type: "number"
+        default: 0
+      availableUnits:
+        type: "number"
+      batchStatus:
+        type: "string"
+        description: "status of the Inventory"
+        enum:
+        - "FRESH"
+        - "PARTIAL"
+        - "COMPLETE"
+        default: "FRESH"
+      registeredBy:
+        type: "string"
+  bmsInventorySchema:
+    type: "object"
+    required:
+    - "hardwareVersion"
+    - "softwareVersion"
+    - "units"
+    - "partNumber"
+    - "billofMaterial"
+    - "PCBreceiveDate"
+    - "PCBproductionDate"
+    - "testApprovedBy"
+    - "warrantyPeriod"
+    - "validTill"
+    - "registeredBy"
+    properties:
+      hardwareVersion:
+        type: string
+      softwareVersion:
+        type: string
+      units:
+        type: number
+      partNumber:
+        type: string
+      billofMaterial:
+        type: string
+      PCBreceiveDate:
+        type: string
+        format: "date-time"
+      PCBproductionDate:
+        type: string
+        format: "date-time"
+      testApprovedBy:
+        type: string
+      warrantyPeriod:
+        type: "string"
+      validTill:
+        type: string
+        format: "date-time"
+      invoiceNumber:
+        type: string
+      registeredBy:
+        type: string
+    xml:
+      name: "bmsInventorySchema"
+  OrderDispatchSchema:
+    type: "object"
+    properties:
+      partNumber:
+       type: "string"
+      selectedQuantity:
+        type: "string"
+      componentId:
+        type: "array"
+        items:
+          $ref: '#/definitions/forComponentArray'
+      orderId:
+        type: "string"
+      sellingParty:
+        type: "string"
+      invoiceNumber:
+        type: "string"
+        default: null
+      demo:
+        type: "boolean"
+        default: false
+      submittedBy:
+        type: "string"
+  forComponentArray:
+    type: "object"
+    properties:
+      ComponentId:
+        type: string
+        description: "this can be either controller, motor or charger's componentId"
+        
+     
