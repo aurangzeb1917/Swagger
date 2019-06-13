@@ -215,12 +215,133 @@ paths:
           description: "Invalid Fleet Id or No data found"
         804:
           description: "Missing Parameter"  
-  
-      
+  /cycleHistory:
+    post:
+      tags:
+      - "Driver Controller"
+      summary: "Gives the History Cycles of a Driver"
+      description: " Based on the type we give history records of a Driver"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "driverId"
+        in: "formData"
+        type: string
+        required: true
+        description: "Driver ID"
+      - name: "type"
+        in: "formData"
+        type: number
+        required: true
+        description: Type will be 1 or 2 
+      - name: "historyNumber"
+        in: "formData"
+        type: number
+        description: "History No if Selected Type=1"
+      - name: "fromDate"
+        in : "formData"
+        type: string
+        format: "date"
+        description: "Require if selected Type=2"
+      - name: "toDate"
+        in: "formData"
+        type: string
+        format: "date"
+        description: "Require if selected Type=2"
+        
+      responses:
+        200:
+          description: "History Cycle Record Found Successfully"
+        700:
+          description: " Invalid type"
+        801:
+          description: "No data Found"
+        804:
+          description: "Missing Parameters"
+  /score:
+    post:
+      tags: 
+      - "Driver Controller"
+      summary: "Gives the rank and Score of Driver"
+      description: "For the given Driver Id , it gives back score Related."
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "driverId"
+        in: "formData"
+        type: string
+        description: "Driver ID"
+      - name: "date"
+        in: "formData"
+        type: string
+        format: "date"
+        
+      responses:
+        200:
+          description: "Score and Rank Found Successfully"
+          schema:
+            $ref: "#/definitions/DriverScoreSchema"
+        800:  
+          description: "System error.Try again later"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameters"
+       
+  /driverGeofence:
+    post:
+      tags: 
+      - "Driver Controller"
+      summary: "Gives the GeoFence of a Driver"
+      description: "Gives the GeoFence of a Driver"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "driverId"
+        in: "formData"
+        type: string
+        required: true
+      - name: "date"
+        in: "formData"
+        type: string
+        format: "date"
+        required: true
+      responses:
+        200:
+          description: "History Cycle Record"
+        801:
+          description: "No Data Found"
+        804:
+          description: " Missing Parameters"
+  /getDriverLspInfo:
+    post:
+      tags: 
+      - "Driver Controller"
+      summary: "Gives the LSP information of a Driver"
+      description: "Gives the LSP information of a Driver"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "driverId"
+        in: "formData"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Details fetch successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: " Missing Parameters"        
     
-    
-  
-  
 definitions:
   driverCurrentInfoSchema:
     type: "object"
@@ -406,5 +527,3 @@ definitions:
       to:
         type: string
         format: "date"
-        
-      
