@@ -1,0 +1,329 @@
+swagger: "2.0"
+info:
+  description: "This is a Basic API Documentation. Later it will be developed for `https://app.lithion.in`"
+  version: "1.0.0"
+  title: "API Documentation"
+  termsOfService: "https://app.lithion.in/"
+  contact:
+    email: "md.aurangzeb@lithion.in"
+host: "localhost:3000"
+basePath: "/V2/api/driver"
+tags:
+- name: "Driver Controller"
+  description: "`Driver controller API's`"  
+schemes:
+- "http"
+paths:
+  /list:
+    get:
+      tags:
+      - "Driver Controller"
+      summary: "Returns the list of drivers"
+      description: "Returns the list of all drivers and history cycles."
+      operationId: "return driver's list"
+      responses:
+        200:
+          description: "Ok.. Data Found."
+        804:
+          description: "Data Not Found."
+        404:
+          description: "Path Not Found" 
+  /getLastCycle:
+    post:
+      tags:
+      - "Driver Controller"
+      summary: "Gives the last cycle Info"
+      description: "For Given Driver , it returns the his Last cycle info"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "`Parameter : driverId` "
+        required: true
+        schema:
+          $ref: '#/definitions/driverCurrentInfoSchema'
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameter"
+  /status:
+    get:
+      tags:
+      - "Driver Controller"
+      summary: "Gives the current status of Driver"
+      description: " Given the driverId , it returns the current status" 
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "driverId"
+        type: string
+        description: "`Parameter : driverId` "
+        required: true
+      responses:
+        200:
+          description: "Data Found Successfully"
+          schema:
+            $ref: '#/definitions/driverCurrentInfoSchema'
+        700:
+          description: "Invalid Parameter"
+        802:
+          description: "Invalid Driver ID"
+  /profile:
+    post:
+      tags:
+      - "Driver Controller"
+      summary: "Gives the Profile of Driver"
+      description: "From driverId , it returns Driver Profile"
+      operationId: "getProfile"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "driverId"
+        in: "formData"
+        description: "ID of Driver whose Profile needed"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameter"
+  /editProfile:
+    post:
+      tags: 
+      - "Driver Controller"
+      summary: "Edits the profile of Driver" 
+      description: "From the given Parameters , it Updates Driver Profile."
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "driverId"
+        in: "formData"
+        description: "ID of Driver"
+        required: true
+        type: "string"
+      - name: "name"
+        in: "formData"
+        description: "Name of Driver"
+        required: true
+        type: "string"
+      - name: "phone"
+        in: "formData"
+        description: "Phone No of Driver"
+        required: true
+        type: "string"
+      - name: "accNumber"
+        in: "formData"
+        description: "Account Number"
+        required: true
+        type: "string"
+      - name: "dob"
+        in: "formData"
+        description: "DOB of Driver YYYY-MM-DD"
+        required: true
+        type: "string"
+        format: "date"
+      - name: "pan"
+        in: "formData"
+        description: "PAN Card "
+        required: true
+        type: "string"
+      - name: "licenseNum"
+        in: "formData"
+        description: "License Number"
+        required: true  
+        type: "string"  
+        
+      responses:
+        200:
+          description: "Driver Details Updated Successfully"
+        701:
+          description: "DataBase Error"
+        804:
+          description: "Missing Parameter"
+          
+    
+  
+  
+definitions:
+  driverCurrentInfoSchema:
+    type: "object"
+    required: 
+    - "driverName"
+    - "driverId"
+    
+    properties:
+      driverName:
+        type: string
+      driverId:
+        type: string
+      assetId:
+        type: string
+      kmDriven:
+        type: number
+        default: 0
+      startAh:
+        type: number
+      usedAh:
+        type: number
+      ahLeft:
+        type: number
+      kmLeft:
+        type: number
+      projectedEarning:
+        type: number
+      amount:
+        type: number
+      paidAmount:
+        type: number
+        default: 0
+      paymentStatus:
+        type: boolean
+        default: false
+      paymentId:
+        $ref: '#/definitions/actorTransactions'
+      paymentType:
+        type: string
+        enum: ['CASH','PAYTM','NA']
+        default: 'NA'
+      fromLspId:
+        type: string
+      toLspId:
+        type: string
+      history:
+        type: array
+        items:
+          $ref: '#/definitions/historyCyclesSchema'
+      AH_Left:
+        type: number
+      KM_Left:
+        type: number
+      earnedCurrCycle:
+        type: number
+  
+  historyCyclesSchema:
+    type: "object"
+    required: 
+    - "cycleNo"
+    - "projectedEarning"
+    - "date"
+    - "kmDriven"
+    - "capUsed"
+
+    properties:
+      assetId:
+        type: string
+      cycleNo:
+        type: number
+        default: 0
+      projectedEarning:
+        type: number
+        default: 0
+      date:
+        type: string
+        format: "date"
+      fromDate:
+        type: string
+        format: "date-time"
+      toDate:
+        type: string
+        format: "date-time"
+      kmDriven:
+        type: number
+        default: 0
+      capUsed:
+        type: number
+        default: 0
+      amount:
+        type: number
+        default: 0
+      paidAmount:
+        type: number
+        default: 0
+      paymentStatus:
+        type: boolean
+        default: false
+      paymentId:
+        $ref: '#/definitions/actorTransactions'
+      paymentType:
+        type: string
+        enum: ['CASH','PAYTM','NA']
+        default: 'NA'
+      fromLspId:
+        type: string
+      toLspId:
+        type: string
+  actorTransactions:
+    type: "object"
+    required: 
+    - "actorId"
+    - "orderId"
+    - "custId"
+    - "txnAmount"
+    - "channelId"
+    
+    properties:
+      actorId:
+        type: string
+      orderId:
+        type: string
+      paytmRawResp:
+        type: object
+      custId:
+        type: string
+      txnAmount:
+        type: number
+      channedId:
+        type: string
+      status: 
+        type: string
+      bankName:
+        type: string
+      txnDate:
+        type: string
+        format: "date"
+      txnId:
+        type: string
+      respCode:
+        type: string
+      paymentMode:
+        type: string
+      bankTxnId:
+        type: string
+      currency:
+        type: string
+      gatewayName:
+        type: string
+      respMsg:
+        type: string
+    
+      
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      
