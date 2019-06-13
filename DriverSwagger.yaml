@@ -157,6 +157,33 @@ paths:
         804:
           description: "Missing Parameter"
           
+  /assignedDrivers:
+    get:
+      tags: 
+      - "Driver Controller"
+      summary: "Gives the List of assigned Drivers"
+      description: " Gives the list of all those Drivers whose assetId is not NULL or Empty"
+      produces:
+      - application/json
+      responses:
+        200:
+         description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+  
+  /UnAssignedDrivers:
+    get:
+      tags: 
+      - "Driver Controller"
+      summary: "Gives the List of Not assigned Drivers"
+      description: " Gives the list of all those Drivers whose assetId is  NULL or Empty"
+      produces:
+      - application/json
+      responses:
+        200:
+         description: "Data Found Successfully"
+        801:
+          description: "No Data Found"        
     
   
   
@@ -312,18 +339,3 @@ definitions:
       respMsg:
         type: string
     
-      
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-      
