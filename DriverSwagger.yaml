@@ -35,19 +35,20 @@ paths:
       summary: "Gives the last cycle Info"
       description: "For Given Driver , it returns the his Last cycle info"
       consumes:
-      - "application/json"
+      - "application/x-www-form-urlencoded"
       produces:
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
+      - name: "driverId"
+        in: "formData"
         description: "`Parameter : driverId` "
         required: true
-        schema:
-          $ref: '#/definitions/driverCurrentInfoSchema'
+        type: string
       responses:
         200:
           description: "Data Found Successfully"
+          schema:
+            $ref: '#/definitions/driverCurrentInfoSchema'
         801:
           description: "No Data Found"
         804:
@@ -59,7 +60,7 @@ paths:
       summary: "Gives the current status of Driver"
       description: " Given the driverId , it returns the current status" 
       consumes:
-      - "application/json"
+      - "application/x-www-form-urlencoded"
       produces:
       - "application/json"
       parameters:
@@ -183,7 +184,40 @@ paths:
         200:
          description: "Data Found Successfully"
         801:
-          description: "No Data Found"        
+          description: "No Data Found"     
+          
+  /driverListForScore:
+    post:
+      tags:
+      - "Driver Controller"
+      summary: "Gives the List of Driver with its score"
+      description: "Based on period , it will gives the driver score details"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters:
+      - name: "date"
+        in : "formData"
+        description: "YYYY-MM-DD"
+        type: string
+        format: "date"
+        required: true
+      - name: "fleetId"
+        in : "formData"
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/DriverScoreSchema'
+        801:
+          description: "Invalid Fleet Id or No data found"
+        804:
+          description: "Missing Parameter"  
+  
+      
+    
     
   
   
@@ -338,4 +372,39 @@ definitions:
         type: string
       respMsg:
         type: string
+  
+  DriverScoreSchema:
+    type: "object"
+    required: 
+    - "driverId"
+    - 'Score'
+    - 'gpsLoss'
+    - 'from'
     
+    properties:
+      driverId:
+        type: string
+      rank:
+        type: number
+      Score:
+        type: number
+      KM:
+        type: number
+      assetId:
+        type: string
+      drivingEfficiency:
+        type: string
+      from:
+        type: string
+        format: "date"
+      gpsLoss:
+        type: number
+      mileage:
+        type: string
+      safetyScore:
+        type: string
+      to:
+        type: string
+        format: "date"
+        
+      
