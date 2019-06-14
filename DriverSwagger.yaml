@@ -34,7 +34,7 @@ paths:
       tags:
       - "Driver Controller"
       summary: "Gives the last cycle Info"
-      description: "For Given Driver ,it returns the his Last cycle info"
+      description: "For Given Driver   it returns the his Last cycle info"
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -59,7 +59,7 @@ paths:
       tags:
       - "Driver Controller"
       summary: "Gives the current status of Driver"
-      description: " Given the driverId, it returns the current status" 
+      description: " Given the driverId   it returns the current status" 
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -84,7 +84,7 @@ paths:
       tags:
       - "Driver Controller"
       summary: "Gives the Profile of Driver"
-      description: "From driverId ,it returns Driver Profile"
+      description: "From driverId   it returns Driver Profile"
       operationId: "getProfile"
       consumes:
       - "application/x-www-form-urlencoded"
@@ -417,9 +417,43 @@ paths:
         804:
           description: "Missing Parameter Data Logger ID"
   
-          
-          
-    
+  /dl/DlInfo:
+    post:
+      tags: 
+      - "Data Logger"
+      summary: "Gives the Data Logger Information and Battery if Associated"
+      description: "Gives the Data Logger Information and Battery if Associated"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "dataLoggerId"
+        in: "formData"
+        description: "Data Logger ID"
+        type: "string"
+        
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameter Data Logger ID"
+  /dl/fetchContactDetails:
+    get:
+      tags:
+      - "Data Logger"
+      summary: "Gives the Contact Details if Data Logger is Associated with a Battery"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+          schema:
+            $ref: "#/definitions/dataloggerSchema"
+        801:
+          description: "No Data Found"
     
 definitions:
   driverCurrentInfoSchema:
