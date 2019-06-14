@@ -7,7 +7,7 @@ info:
   contact:
     email: "md.aurangzeb@lithion.in"
 host: "localhost:3000"
-basePath: "/V2/api/driver"
+basePath: "/V2/api"
 tags:
 - name: "Driver Controller"
   description: "`Driver controller API's`"  
@@ -15,7 +15,7 @@ schemes:
 - "http"
 - "https"
 paths:
-  /list:
+  /driver/list:
     get:
       tags:
       - "Driver Controller"
@@ -29,12 +29,12 @@ paths:
           description: "Data Not Found."
         404:
           description: "Path Not Found" 
-  /getLastCycle:
+  /driver/getLastCycle:
     post:
       tags:
       - "Driver Controller"
       summary: "Gives the last cycle Info"
-      description: "For Given Driver , it returns the his Last cycle info"
+      description: "For Given Driver ,it returns the his Last cycle info"
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -54,12 +54,12 @@ paths:
           description: "No Data Found"
         804:
           description: "Missing Parameter"
-  /status:
+  /driver/status:
     get:
       tags:
       - "Driver Controller"
       summary: "Gives the current status of Driver"
-      description: " Given the driverId , it returns the current status" 
+      description: " Given the driverId, it returns the current status" 
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -79,12 +79,12 @@ paths:
           description: "Invalid Parameter"
         802:
           description: "Invalid Driver ID"
-  /profile:
+  /driver/profile:
     post:
       tags:
       - "Driver Controller"
       summary: "Gives the Profile of Driver"
-      description: "From driverId , it returns Driver Profile"
+      description: "From driverId ,it returns Driver Profile"
       operationId: "getProfile"
       consumes:
       - "application/x-www-form-urlencoded"
@@ -103,12 +103,12 @@ paths:
           description: "No Data Found"
         804:
           description: "Missing Parameter"
-  /editProfile:
+  /driver/editProfile:
     post:
       tags: 
       - "Driver Controller"
       summary: "Edits the profile of Driver" 
-      description: "From the given Parameters , it Updates Driver Profile."
+      description: "From the given Parameters   it Updates Driver Profile."
       consumes: 
       - "application/x-www-form-urlencoded"
       produces:
@@ -159,7 +159,7 @@ paths:
         804:
           description: "Missing Parameter"
           
-  /assignedDrivers:
+  /driver/assignedDrivers:
     get:
       tags: 
       - "Driver Controller"
@@ -173,7 +173,7 @@ paths:
         801:
           description: "No Data Found"
   
-  /UnAssignedDrivers:
+  /driver/UnAssignedDrivers:
     get:
       tags: 
       - "Driver Controller"
@@ -187,12 +187,12 @@ paths:
         801:
           description: "No Data Found"     
           
-  /driverListForScore:
+  /driver/driverListForScore:
     post:
       tags:
       - "Driver Controller"
       summary: "Gives the List of Driver with its score"
-      description: "Based on period , it will gives the driver score details"
+      description: "Based on period   it will gives the driver score details"
       consumes:
       - "application/x-www-form-urlencoded"
       produces: 
@@ -216,7 +216,7 @@ paths:
           description: "Invalid Fleet Id or No data found"
         804:
           description: "Missing Parameter"  
-  /cycleHistory:
+  /driver/cycleHistory:
     post:
       tags:
       - "Driver Controller"
@@ -261,12 +261,12 @@ paths:
           description: "No data Found"
         804:
           description: "Missing Parameters"
-  /score:
+  /driver/score:
     post:
       tags: 
       - "Driver Controller"
       summary: "Gives the rank and Score of Driver"
-      description: "For the given Driver Id , it gives back score Related."
+      description: "For the given Driver Id   it gives back score Related."
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -293,7 +293,7 @@ paths:
         804:
           description: "Missing Parameters"
        
-  /driverGeofence:
+  /driver/driverGeofence:
     post:
       tags: 
       - "Driver Controller"
@@ -320,7 +320,7 @@ paths:
           description: "No Data Found"
         804:
           description: " Missing Parameters"
-  /getDriverLspInfo:
+  /driver/getDriverLspInfo:
     post:
       tags: 
       - "Driver Controller"
@@ -341,7 +341,85 @@ paths:
         801:
           description: "No Data Found"
         804:
-          description: " Missing Parameters"        
+         description: " Missing Parameters"   
+  /dl/editDataLogger:
+    post:
+      tags:
+      - "Data Logger"
+      summary: "Updates Data Logger Details"
+      description: "The Data Logger is updates based on Parameters Given."
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dataLoggerId"
+        in : "formData"
+        type: string
+        required: true
+      - name: "mNum"
+        in: "formData"
+        description: "Mobile Number"
+        type: string
+        required: true
+      - name: "sNum"
+        in: "formData"
+        type: string
+        required: true
+        description: "Serial Number"
+      - name: "dlHardwareVersion"
+        in: "formData"
+        type: "string"
+        description: "HardWare Version"
+        required: true
+      - name: "dlSoftwareVersion"
+        in: "formData"
+        type: string
+        description: "SoftWare Version"
+        required: true
+      - name: "updatedBy"
+        in: "formData"
+        type: string
+        description: "Updated By"
+        required: true    
+      responses:
+        200:
+          description: "Data Logger details updated"
+          schema:
+            $ref: '#/definitions/dataloggerSchema'
+        701:
+          description: "DataBase Error"
+        804:
+          description: "Missing Parameters"
+  
+  /dl/fetchDlDetails:
+    post:
+      tags:
+      - "Data Logger"
+      summary: "Fetch all details of a Data Logger"
+      description: "From Data logger Id , gives all details of a Data Logger"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "dlId"
+        in: "formData"
+        type: string
+        description: "Data Logger ID"
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+          schema:
+            $ref: "#/definitions/dataloggerSchema"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameter Data Logger ID"
+  
+          
+          
+    
     
 definitions:
   driverCurrentInfoSchema:
@@ -382,7 +460,7 @@ definitions:
         $ref: '#/definitions/actorTransactions'
       paymentType:
         type: string
-        enum: ['CASH','PAYTM','NA']
+        enum: ['CASH', 'PAYTM', 'NA']
         default: 'NA'
       fromLspId:
         type: string
@@ -445,7 +523,7 @@ definitions:
         $ref: '#/definitions/actorTransactions'
       paymentType:
         type: string
-        enum: ['CASH','PAYTM','NA']
+        enum: ['CASH', 'PAYTM', 'NA']
         default: 'NA'
       fromLspId:
         type: string
@@ -528,3 +606,109 @@ definitions:
       to:
         type: string
         format: "date"
+  
+  dataloggerSchema:
+    type: "object"
+    required: 
+    - "dataLoggerId"
+    - "hardwareVersion"
+    - "softwareVersion"
+    - "sNumber"
+    - "mNumber"
+    properties:
+      dataLoggerId:
+        type: string
+        uniqueItems: true
+      hardwareVersion:
+        type: string
+      softwareVersion:
+        type: string
+      sNumber:
+        type: string
+      mNumber:
+        type: string
+        uniqueItems: true  
+      simVendorName:
+        type: string
+      vendorName:
+        type: string
+      isAssociated:
+        type: number
+        default: 1
+      updatedMobileNumber:
+        type: string
+        uniqueItems: true
+      updatedBy:
+        type: string
+      createdBy:
+        type: string
+        
+  checkListSchema:
+    type: "object"
+    properties:
+      batteryLidAlign: 
+        type: boolean
+      imageUrl :
+        type: string
+      batteryNum: 
+        type: string
+      bmsType: 
+        type: number
+      bmsTypeValue: 
+        type: string
+      bmsEeprom: 
+        type: boolean
+      bmsMcu: 
+        type: boolean
+      bmsNumber: 
+        type: string
+      bmsSenseWireConnector: 
+        type: string
+      bmsHardware: 
+        type: string
+      bmsSoftware: 
+        type: string
+      cellHolder: 
+        type: boolean
+      checkedBy: 
+        type: string
+      coinCell:
+        type: boolean
+      dataLoggerId: 
+        type: string
+      dlCodeVersion: 
+        type: string
+      dlPcbNumber: 
+        type: string
+      glued: 
+        type: boolean 
+      gpsCoordinates:
+        type: string 
+      gpsWorking: 
+        type: boolean 
+      location: 
+        type: string 
+      ntc: 
+        type: boolean 
+      remoteTested:
+        type: boolean 
+      simSerialNum:
+        type: string 
+      smartLock:
+        type: boolean 
+      socStatus:
+        type: number 
+      socWorking:
+        type: boolean 
+      spaccer:
+        type: boolean 
+      switch:
+        type: string 
+      sdCard:
+        type: boolean 
+      chargerAuthentication: 
+        type: boolean 
+      terminalCheck: 
+        type: boolean 
+      dlContactNum: 
+        type: string
