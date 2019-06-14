@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "This is a Basic API Documentation. Later it will be developed for `https://app.lithion.in`"
+  description: "API Documentation for Driver Controller  `https://app.lithion.in`"
   version: "1.0.0"
-  title: "API Documentation"
+  title: "Driver Controller API "
   termsOfService: "https://app.lithion.in/"
   contact:
     email: "md.aurangzeb@lithion.in"
@@ -13,6 +13,7 @@ tags:
   description: "`Driver controller API's`"  
 schemes:
 - "http"
+- "https"
 paths:
   /list:
     get:
