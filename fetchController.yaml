@@ -33,10 +33,12 @@ paths:
       tags: 
       - "Fetch Controller"
       summary: "Gives the list of Unassociated Data Logger"
-      description: " Those Data Logger which are active and  Not Associated are fetched. " 
+      description: " Those Data Logger which are active and  Not Associated are fetched. "
       responses:
         200:
           description: "Data Found Successfully"
+          schema:
+            $ref: "#/definitions/Datalogger"
         801:
           description: "No Data Found" 
           
@@ -164,6 +166,8 @@ paths:
       responses:
         200:
           description: "Data Fetched Successfully"
+          schema:
+            $ref: '#/definitions/PaymentConfirmation'
         801:
           description: "No Data Found for the period."
         804:
@@ -246,6 +250,8 @@ paths:
       responses:
         200:
           description: "Data Found successfully"
+          schema:
+            $ref: "#/definitions/assetHistoryInfo"
         801:
           description: "No Data found"
         804:
@@ -296,6 +302,8 @@ paths:
       responses:
         200:
           description: "Data found Successfully"
+          schema:
+            $ref: '#/definitions/AssetSmsStatus'
         801:
           description: "No Data Found"
         804:
@@ -720,6 +728,32 @@ definitions:
         type: string
       createdBy:
         type: string
+  Actor:
+    type: object
+    properties:
+      account_no:
+        type: string
+      actorId:
+        type: string
+      adhar:
+        type: string
+      dob:
+        type: string
+      name:
+        type: string
+      pan:
+        type: string
+      phone:
+        type: string
+      numOfBattery:
+        type: integer
+      numOfCharger:
+        type: integer
+      registeredAt:
+        type: string
+    xml:
+      name: Actor
+  
   
   batteryPackSchema:
     type: "object"
@@ -783,3 +817,310 @@ definitions:
           type: string 
       updatedBy:  
           type: string
+          
+  assetHistoryInfo:
+    type: "object"
+    required:
+    - "assetId"
+    properties:
+      assetId:
+        type: string
+      capUsed:
+        type: number
+      cycleEarn:
+        type: number
+      kmDriven:
+        type: number
+      cycleNo:
+        type: number
+      actorId:
+        type: string
+      historyCycles:
+        properties:
+          assetId:
+            type: string
+          cycleEarn:
+            type: string
+          capUsed:
+            type: string
+          kmDriven:
+            type: string
+          actorId:
+            type: string
+          cycleNo:
+            type: string
+          cycleState:
+            type: string          
+
+  PaymentConfirmation:
+    type: object
+    required:
+    - "lspId"
+    - "driverId"
+    - "amount"
+    - "salesPerson"
+    - "fromDate"
+    - "toDate"
+    properties:
+      lspId:
+        type: string
+      driverId:
+        type: string
+      amount:
+        type: integer
+      salesPerson:
+        type: string
+      fromDate:
+        type: string
+      toDate:
+        type: string
+    xml:
+      name: PaymentConfirmation    
+      
+  AssetSmsStatus:
+    type: object
+    properties:
+      assetID:
+        type: string
+      isBmsSmsSent:
+        type: integer
+      isDataLoggerSmsSent:
+        type: integer
+      highCellVolStatus:
+        type: integer
+      highCellVolValues:
+        type: string
+      isHighCellVolSmsSent:
+        type: boolean
+      highCellVolTimestamp:
+        type: integer
+      highCellVolSmsSentTimestamp:
+        type: integer
+      lowCellVolStatus:
+        type: integer
+      lowCellVolValues:
+        type: string
+      criticalCellVolValues:
+        type: string
+      isLowCellVolSmsSent:
+        type: string
+      lowCellVolTimestamp:
+        type: integer
+      lowCellVolSmsSentTimestamp:
+        type: integer
+      highCurrStatus:
+        type: integer
+      isHighCurrSmsSent:
+        type: string
+      highCurrTimestamp:
+        type: integer
+      highCurrSmsSentTimestamp:
+        type: integer
+      cellTempStatus:
+        type: integer
+      cellTempValues:
+        type: string
+      isCellTempSmsSent:
+        type: boolean
+      cellTempTimestamp:
+        type: integer
+      cellTempSmsSentTimestamp:
+        type: integer
+      powerTempStatus:
+        type: integer
+      isPowerTempSmsSent:
+        type: boolean
+      powerTempTimestamp:
+        type: integer
+      powerTempSmsSentTimestamp:
+        type: integer
+      ambientTempStatus:
+        type: integer
+      isAmbientTempSmsSent:
+        type: integer
+      ambientTempTimestamp:
+        type: integer
+      ambientTempSmsSentTimestamp:
+        type: integer
+      istsdSmsSent:
+        type: integer
+    xml:
+      name: AssetSmsStatus   
+      
+  
+  Datalogger:
+    type: object
+    required: 
+    - "dataLoggerId"
+    - "sNumber"
+    - "mNumber"
+    properties:
+      dataLoggerId:
+        type: string
+      hardwareVersion:
+        type: string
+      softwareVersion:
+        type: string
+      sNumber:
+        type: string
+      mNumber:
+        type: string
+      simVendorName:
+        type: string
+      vendorName:
+        type: string
+      isAssociated:
+        type: integer
+      isActive:
+        type: string
+      updatedMobileNUmber:
+        type: string
+      updatedBy:
+       type: string
+      createdBy:
+        type: string
+    xml:
+      name: Datalogger 
+  
+  BatteryPack:
+    type: object
+    required:
+    - "batteryPackId"
+    - "associatedBmsId"
+    - "associatedDataloggerId"
+    - "cabinetVersion"
+    properties:
+      batteryPackId:
+        type: string
+      associatedBmsId:
+        type: string
+      associatedDataloggerId:
+        type: string
+      cellVendorName:
+        type: string
+      cabinetVersion:
+        type: string
+      cellNum1:
+        type: string
+      cellNum2:
+        type: string
+      cellNum3:
+        type: string
+      cellNum4:
+        type: string
+      cellNum5:
+        type: string
+      cellNum6:
+        type: string
+      cellNum7:
+        type: string
+      cellNum8:
+        type: string
+      cellNum9:
+        type: string
+      cellNum10:
+        type: string
+      cellNum11:
+        type: string
+      cellNum12:
+        type: string
+      cellNum13:
+        type: string
+      cellNum14:
+        type: string
+      cellNum15:
+        type: string
+      cellNum16:
+        type: string
+      isActive:
+        type: integer
+      isAssigned:
+        type: integer
+    xml:
+      name: BatteryPack
+  
+  BatteryPackAssignment:
+    type: object
+    properties:
+      batteryPackId:
+        type: string
+      currentAssignee:
+        type: string
+      primaryAssignee:
+        type: string
+    xml:
+      name: BatteryPackAssignment
+      
+  LocateBattery:
+    type: object
+    required:
+    - "assetId"
+    - "secondaryOwner"
+    properties:
+      assetId:
+        type: string
+      secondaryOwner:
+        type: string
+      isAvailable:
+        type: boolean
+    xml:
+      name: LocateBattery  
+      
+  AssetCurrentInfo:
+    type: object
+    required:
+    - "assetId"
+    - "status"
+    properties:
+      assetId:
+        type: string
+      current:
+        type: integer
+      voltage:
+        type: integer
+      capLeft:
+        type: integer
+      capUsed:
+        type: integer
+      kmLeft:
+        type: integer
+      kmDriven:
+        type: integer
+      status:
+        type: integer
+      capStart:
+        type: integer
+      lat:
+        type: integer
+      lon:
+        type: integer
+      actorId:
+        type: string
+    xml:
+      name: AssetCurrentInfo
+  
+  DriverCurrentInfo:
+    type: object
+    properties:
+      driverName:
+        type: string
+      driverId:
+        type: string
+      assetId:
+        type: string
+      KM_driven:
+        type: integer
+      startAh:
+        type: integer
+      usedAh:
+        type: integer
+      AH_left:
+        type: integer
+      KM_left:
+        type: integer
+      pEarn:
+        type: integer
+      earnedCurrCycle:
+        type: integer
+    xml:
+      name: DriverCurrentInfo     
