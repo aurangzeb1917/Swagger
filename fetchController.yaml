@@ -216,6 +216,307 @@ paths:
           description: "No Data Found ."  
         804:
           description: "Missing  battery Parameter" 
+  
+  /fetch/assetHistoryInfo:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Gives the asset History Information"
+      description: "Based on the asset ID and given from and to date , it gives history cycles information"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "assetId"
+        in: "formData"
+        type: string
+        required: true
+      - name: "fromDate"
+        in: "formData"
+        type: string
+        format: "date"
+        required: true
+      - name: "toDate"
+        in: "formData"
+        type: string
+        format: "date"
+        required: true  
+        
+      responses:
+        200:
+          description: "Data Found successfully"
+        801:
+          description: "No Data found"
+        804:
+          description: "Missing Parameters"
+          
+  /fetch/recentLocation:
+    post:
+      tags:
+      - "Fetch Controller"
+      summary: "Gives the recent location of a Battery"
+      description: "Based on the Battery ID and Limit value , it returns the recent location"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "appliation/json"
+      parameters:
+      - name: "battery"
+        in: "formData"
+        type: string
+      - name: "limit"
+        in: "formData"
+        type: number
+
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "Battery Data Not Found"
+        803:
+          description: "Invalid Battery "  
+          
+  /fetch/assetThresholdInfo:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns Asset Threshold Information"
+      description:  "Based On Asset ID , it returns the asset Threshold information"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "assetId"
+        in: "formData"
+        type: string
+        required: true
+      
+      responses:
+        200:
+          description: "Data found Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameters"
+  
+  /fetch/assetCurrentInfo:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns the Information of Asset "
+      description: "Based on assetId , it returns the asset Information"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "applicatiopn/json"
+      parameters:
+      - name: "assetId"
+        in: "formData"
+        type: string
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Asset ID Missing"
+  
+  /fetch/driverCurrentInfo:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns the information of Driver"
+      description: "Based on Driver ID it returns the information of a Driver"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "driverId"
+        in: "formData"
+        type: string
+        
+      responses:
+        200:
+          description: "Data Found Successfully"
+        804:
+          description: "Driver ID Missing"
+        801:
+          description: "No data found"
+  
+  /fetch/lspDefaultLocation:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns the LSP information "
+      description: " From lspId , it returns the LSP Information"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lspId"
+        in: "formData"
+        type: string
+      responses:  
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "LSP ID Missing"
+    
+  /fetch/bmsDetails: 
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns the BMS Details"
+      description: "From the Given bmsId , it returns the BMS details"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "bmsId"
+        in: "formData"
+        type: string
+      responses:  
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Bms Id Missing"
+  
+  /fetch/batteryCsvData:
+    post:
+      tags:
+      - "Fetch Controller"
+      summary: "Returns the Data for a Battery in a given period."
+      description: "Based On given time period , it returns the information of Battery"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "batteryId"
+        in: "formData"
+        type: string
+      - name: "fromDate"
+        in: "formData"
+        type: string
+        format: "date"
+      - name: "toDate"
+        in: "formData"
+        type: string
+        format: "date"  
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameters"
+  
+  /fetch/sendDataMail:
+    post:
+      tags:
+      - "Fetch Controller"
+      summary: "Sends the Data of a Battery for a given period in mail"
+      description: "Based On given time period , it sends the mail of  battery information "
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "formData"
+        type: string
+        
+      - name: "assetId"
+        in: "formData"
+        type: string
+        
+      - name: "fromDate"
+        in: "formData"
+        type: string
+        format: "date"
+        
+      - name: "toDate"
+        in: "formData"
+        type: string
+        format: "date"  
+      responses:
+        200:
+          description: "You will shortly recieve a mail for requested data"
+        700:
+          description: "Data for not more than 2 days are allowed"
+        801:
+          description: "You are not register with us.Please Contact Admin OR \n Please inform admin to update your email id OR \n You Don't have access for this"
+        804:
+          description: "Missing Parameters"
+  
+  /fetch/assetLastLocation:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns the Location information of Asset "
+      description: " From assetId, it returns the Asset Lat Lon value"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "assetId"
+        in: "formData"
+        type: string
+      responses:  
+        200:
+          description: "Data fetched successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Asset ID Missing"
+      
+  /fetch/sendingOutBattery:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns the Information of Active Batteries with Associated BMS and Data Logger "
+      description: "Returns the Information of all Active Batteries with Associated BMS and Data Logger Information"
+      produces:
+      - "application/json"
+      responses:  
+        200:
+          description: "Data fetched successfully"
+        801:
+          description: "No Data Found"
+          
+  /fetch/bmsInfo:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns the Location information of Asset "
+      description: " From assetId, it returns the Asset Lat Lon value"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bmsId"
+        in: "formData"
+        type: string
+      responses:  
+        200:
+          description: "Details fetch successfully"
+        801:
+          description: "No Data Found"
+        
+          
+    
+      
     
           
 
