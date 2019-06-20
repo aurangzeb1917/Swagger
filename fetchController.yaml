@@ -1,0 +1,484 @@
+swagger: "2.0"
+info:
+  description: "API Documentation for Fetch Controller `https://app.lithion.in`"
+  version: "2.0.1"
+  title: "API Documentation "
+  termsOfService: "https://app.lithion.in/"
+  contact:
+    email: "md.aurangzeb@lithion.in"
+host: "localhost:3000"
+basePath: "/V2/api"
+tags:
+- name: "Data Logger"  
+- name: "Fetch Controller"
+schemes:
+- "http"
+- "https"
+paths:
+  /fetch/unassociatedBms:
+    get:
+      tags: 
+      - "Fetch Controller"
+      summary: "Gives the list of Unassociated BMS"
+      description: " Those BMS which are active and Not Associated are fetched. " 
+      
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found"
+  
+  /fetch/unassociatedDL:
+    get:
+      tags: 
+      - "Fetch Controller"
+      summary: "Gives the list of Unassociated Data Logger"
+      description: " Those Data Logger which are active and  Not Associated are fetched. " 
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found" 
+          
+  /fetch/associatedBatteries:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Returns Active batteries with given status"
+      description: "It returns all the batteryPackId which are Active  and having given battery Status."
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "batteryStatus"
+        in: "formData"
+        description: "Battery Status"
+        type: number
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "No Data Found" 
+  /fetch/actors:
+    get:
+      tags:
+      - "Fetch Controller"
+      summary: " Gives the list of actors"
+      description: " Lists all the actors "
+      produces: 
+      - "application/json"
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "Data Not found"
+  
+  /fetch/unmappedCells:
+    get:
+      tags:
+      - "Fetch Controller"
+      summary: "Returns all the Active cells which are not associated."
+      description: "Returns the Cell ID and  Capacity of Cells which are active and not associated"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "Data Not found"
+          
+  /fetch/newBatteries:
+    get:
+      tags: 
+      - "Fetch Controller"
+      summary: "Gives the information of new Batteries"
+      description: "Gives information of Batteries with status 11 and having Data Logger , BMS associated "
+      produces: 
+      - "appliction/json"
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "Data Not found"
+  
+  /fetch/batteries:
+    get:
+      tags:
+      - "Fetch Controller"
+      summary: "Gives the information of asset "
+      description: " It Gives the information of Active assets , it's current assignee ,Secondary Owner "
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Data Found Successfully"
+        801:
+          description: "Data Not found"
+  
+  /fetch/partnerGivenBatteries:   
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Gives the information of Battery from Partner Assignee"
+      description: "From Given Partner Assignee , it returns batteries with Status 12 or 15 and BMS ,Data Logger Associated."
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "partnerAssignee"
+        in: "formData"
+        type: string
+        required: true
+        
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameter Partner Assignee"
+          
+  /fetch/accountData:
+    post:
+      tags: 
+      - "Fetch Controller"
+      summary: "Gives the Payment information between Dates"
+      description: " From given From and To date , it return all payment information in that period"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "fromDate"
+        in: "formData"
+        type: string
+        format: "date"
+        description: "From Date (YYYY-MM-DD)"
+      - name: "toDate"
+        in: "formData"
+        type: string
+        format: "date"
+        description: "To Date (YYYY-MM-DD)"
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+        801:
+          description: "No Data Found for the period."
+        804:
+          description: "Missing Date parameter"
+          
+  /fetch/batteryDetails:
+    get:
+      tags:
+      - "Fetch Controller"
+      summary: "Returns the Battery Details"
+      description: "Based on the battery_num , it returns its BMS , BMS type , Data Logger and its specifications"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "battery"
+        in: "query"
+        type: string
+        description: " Battery ID"
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+        700:
+          description: "Invalid Battery"
+        800:
+          description: "Battery Not Found"
+        804:
+          description: "Missing  battery Parameter"  
+  
+  /fetch/getBatteryDetails:
+    post:
+      tags: 
+      - 'Fetch Controller'
+      summary: "Gives the Battery Details ,cell voltages , battery status etc"
+      description: "From the Battery ID , it gives the information of BMS and Data Logger"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "batteryId"
+        in: "formData"
+        type: string
+        description: "Battery ID"
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+        801:
+          description: "No Data Found ."  
+        804:
+          description: "Missing  battery Parameter" 
+    
+          
+
+  /dl/editDataLogger:
+    post:
+      tags:
+      - "Data Logger"
+      summary: "Updates Data Logger Details"
+      description: "The Data Logger is updates based on Parameters Given."
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "dataLoggerId"
+        in : "formData"
+        type: string
+        required: true
+      - name: "mNum"
+        in: "formData"
+        description: "Mobile Number"
+        type: string
+        required: true
+      - name: "sNum"
+        in: "formData"
+        type: string
+        required: true
+        description: "Serial Number"
+      - name: "dlHardwareVersion"
+        in: "formData"
+        type: "string"
+        description: "HardWare Version"
+        required: true
+      - name: "dlSoftwareVersion"
+        in: "formData"
+        type: string
+        description: "SoftWare Version"
+        required: true
+      - name: "updatedBy"
+        in: "formData"
+        type: string
+        description: "Updated By"
+        required: true    
+      responses:
+        200:
+          description: "Data Logger details updated"
+          schema:
+            $ref: '#/definitions/dataloggerSchema'
+        701:
+          description: "DataBase Error"
+        804:
+          description: "Missing Parameters"
+  
+  /dl/fetchDlDetails:
+    post:
+      tags:
+      - "Data Logger"
+      summary: "Fetch all details of a Data Logger"
+      description: "From Data logger Id , gives all details of a Data Logger"
+      consumes: 
+      - "application/x-www-form-urlencoded"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "dlId"
+        in: "formData"
+        type: string
+        description: "Data Logger ID"
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+          schema:
+            $ref: "#/definitions/dataloggerSchema"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameter Data Logger ID"
+  
+  /dl/DlInfo:
+    post:
+      tags: 
+      - "Data Logger"
+      summary: "Gives the Data Logger Information and Battery if Associated"
+      description: "Gives the Data Logger Information and Battery if Associated"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "dataLoggerId"
+        in: "formData"
+        description: "Data Logger ID"
+        type: "string"
+        
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+        801:
+          description: "No Data Found"
+        804:
+          description: "Missing Parameter Data Logger ID"
+  /dl/fetchContactDetails:
+    get:
+      tags:
+      - "Data Logger"
+      summary: "Gives the Contact Details if Data Logger is Associated with a Battery"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Data Fetched Successfully"
+          schema:
+            $ref: "#/definitions/dataloggerSchema"
+        801:
+          description: "No Data Found"
+  
+  /dl/sendingOnmessage:
+    post:
+      tags:
+      - "Data Logger"
+      summary: "Sends On Message to Data Logger of given Battery"
+      description: "Sends On Message to Data Logger of given Battery known by its assetId "
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "assetId"
+        in: "formData"
+        type: string
+        description: "Asset ID for a Battery"
+      responses:
+        200:
+          description: "Message delievered successfully"
+        800:
+          description: "Message Sending Failed."
+        801:
+          description: "Message failed to delievered"
+        804:
+          description: "Missing Parameters"
+  
+  /dl/sendingOffmessage:
+    post:
+      tags:
+      - "Data Logger"
+      summary: "Sends Off Message to Data Logger of given Battery"
+      description: "Sends Off Message to Data Logger of given Battery known by its assetId "
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "assetId"
+        in: "formData"
+        type: string
+        description: "Asset ID for a Battery"
+      responses:
+        200:
+          description: "Message delievered successfully"
+        800:
+          description: "Message Sending Failed."
+        801:
+          description: "Message failed to delievered"
+        804:
+          description: "Missing Parameters"        
+          
+      
+definitions:
+  dataloggerSchema:
+    type: "object"
+    required: 
+    - "dataLoggerId"
+    - "hardwareVersion"
+    - "softwareVersion"
+    - "sNumber"
+    - "mNumber"
+    properties:
+      dataLoggerId:
+        type: string
+        uniqueItems: true
+      hardwareVersion:
+        type: string
+      softwareVersion:
+        type: string
+      sNumber:
+        type: string
+      mNumber:
+        type: string
+        uniqueItems: true  
+      simVendorName:
+        type: string
+      vendorName:
+        type: string
+      isAssociated:
+        type: number
+        default: 1
+      updatedMobileNumber:
+        type: string
+        uniqueItems: true
+      updatedBy:
+        type: string
+      createdBy:
+        type: string
+  
+  batteryPackSchema:
+    type: "object"
+    properties:
+      batteryPackId:   
+        type     : string 
+      lowerThreshold :   
+        type: number 
+      associatedBmsId:   
+        type     : string 
+      associatedDataloggerId:   
+        type     : string 
+      cellVendorName:  
+        type : string
+      cabinetVersion:   
+        type     : string 
+      numOfCells :  
+        type: number
+      cellNum1:   
+        type : string
+      cellNum2:   
+        type : string
+      cellNum3:   
+        type : string
+      cellNum4:   
+        type : string
+      cellNum5:   
+        type : string
+      cellNum6:   
+        type : string
+      cellNum7:   
+        type : string
+      cellNum8:   
+        type : string
+      cellNum9:   
+        type : string
+      cellNum10:   
+        type : string
+      cellNum11:   
+        type : string
+      cellNum12:   
+        type : string
+      cellNum13:   
+        type : string
+      cellNum14:   
+        type : string
+      cellNum15:   
+        type : string
+      cellNum16:   
+        type : string
+      isActive:   
+        type    : number 
+        default : 1
+      isAssigned:   
+        type    : number 
+        default : 0
+      batteryStatus :   
+        type    : number 
+        default : 10
+      submittedBy:  
+          type: string 
+      updatedBy:  
+          type: string
